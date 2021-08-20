@@ -1,0 +1,9 @@
+venv
+.idea/
+
+# Pywikibot temporary files
+throttle.ctrl
+apicache-py3
+user-password.py
+user-config.py
+pywikibot.lwp

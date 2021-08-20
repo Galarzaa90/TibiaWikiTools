@@ -1,0 +1,4 @@
+pywikibot
+click
+tibia.py
+tibiawikisql
