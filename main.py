@@ -1,6 +1,5 @@
 import asyncio
 import functools
-import logging
 import os
 import re
 
@@ -29,11 +28,14 @@ async def get_boosted_creature(client, *, tries=5):
     try:
         response = await client.fetch_boosted_creature()
         return response.data
-    except Exception as e:
+    except Exception:
         return await get_boosted_creature(client, tries=tries - 1)
 
 
+@cli.command()
+@make_sync
 async def check_headers():
+    """Check for headers in articles that might be too high."""
     api = tibiawikisql.api.WikiClient()
     articles_names = list(api.get_category_members_titles("Tibia History"))
     articles = api.get_articles(articles_names)
@@ -44,14 +46,6 @@ async def check_headers():
             results.append(f"- [{article.title}]({article.url}): Has header level 1,2, or 3")
     for result in results:
         print(result)
-
-
-async def check_implementations():
-    api = tibiawikisql.api.WikiClient()
-    version_articles = set(api.get_category_members_titles("Version ? Implementations"))
-    item_articles = set(api.get_category_members_titles("Items"))
-    need_update = version_articles.intersection(item_articles)
-    print("\n".join(need_update))
 
 
 @cli.command(name="check-creatures")
