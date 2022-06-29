@@ -108,6 +108,9 @@ async def boosted_creature():
     boosted_creature = await get_boosted_creature(client)
     click.echo(f"Boosted Creature: {boosted_creature.name}")
     creature_name = boosted_creature.name.replace(" Of ", " of ").replace(" The ", " the ")
+    # The article on TibiaWiki has (Basic) at the end.
+    if creature_name == "Nomad":
+        creature_name = "Nomad (Basic)"
     click.echo(f"Formatting name: {boosted_creature.name!r} -> {creature_name!r}")
 
     click.echo("Logging on to TibiaWiki...")
