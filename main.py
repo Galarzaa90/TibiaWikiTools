@@ -24,12 +24,13 @@ def make_sync(func):
 def cli():
     pass
 
-async def get_boosted_creature(client, *, tries=5):
+
+async def get_boosted_creature_and_boss(client, *, tries=5):
     try:
-        response = await client.fetch_boosted_creature()
+        response = await client.fetch_boosted_creature_and_boss()
         return response.data
     except Exception:
-        return await get_boosted_creature(client, tries=tries - 1)
+        return await get_boosted_creature_and_boss(client, tries=tries - 1)
 
 
 @cli.command()
@@ -105,13 +106,16 @@ async def boosted_creature():
     """Updates the boosted creature template."""
     click.echo("Fetching boosted creature…")
     client = tibiapy.Client()
-    boosted_creature = await get_boosted_creature(client)
-    click.echo(f"Boosted Creature: {boosted_creature.name}")
+    boosted_creatures = await get_boosted_creature_and_boss(client)
+    click.echo(f"Boosted Creature: {boosted_creatures.creature.name}")
     creature_name = boosted_creature.name.replace(" Of ", " of ").replace(" The ", " the ")
     # The article on TibiaWiki has (Basic) at the end.
     if creature_name == "Nomad":
         creature_name = "Nomad (Basic)"
     click.echo(f"Formatting name: {boosted_creature.name!r} -> {creature_name!r}")
+
+    boss_name = boosted_creatures.boss.name
+    click.echo(f"Boosted Boss: {boss_name}")
 
     click.echo("Logging on to TibiaWiki...")
     site = pywikibot.Site(fam="tibiawiki", code="en", user=os.getenv("WIKI_USER"))
@@ -122,6 +126,10 @@ async def boosted_creature():
     page.text = creature_name
     # Set edit summary to creature's name
     page.save(creature_name)
+
+    boss_page = pywikibot.Page(site, "Template:Boosted Boss")
+    boss_page.text = boss_name
+    boss_page.save(boss_name)
     await client.session.close()
 
 
