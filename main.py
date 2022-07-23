@@ -108,7 +108,7 @@ async def boosted_creature():
     client = tibiapy.Client()
     boosted_creatures = await get_boosted_creature_and_boss(client)
     click.echo(f"Boosted Creature: {boosted_creatures.creature.name}")
-    creature_name = boosted_creatures.name.replace(" Of ", " of ").replace(" The ", " the ")
+    creature_name = boosted_creatures.creature.name.replace(" Of ", " of ").replace(" The ", " the ")
     # The article on TibiaWiki has (Basic) at the end.
     if creature_name == "Nomad":
         creature_name = "Nomad (Basic)"
