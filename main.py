@@ -112,7 +112,7 @@ async def boosted_creature():
     # The article on TibiaWiki has (Basic) at the end.
     if creature_name == "Nomad":
         creature_name = "Nomad (Basic)"
-    click.echo(f"Formatting name: {boosted_creature.name!r} -> {creature_name!r}")
+    click.echo(f"Formatting name: {boosted_creatures.creature.name!r} -> {creature_name!r}")
 
     boss_name = boosted_creatures.boss.name
     click.echo(f"Boosted Boss: {boss_name}")
